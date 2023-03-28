@@ -33,8 +33,7 @@ jobs:
       with:
         mysql database: 'database'
         mysql user: 'ji'
-        mysql root password: 'pass'
-        mysql password: 'pass'
+        mysql password: 'root'
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
