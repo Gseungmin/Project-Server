@@ -1,4 +1,11 @@
 spring:
+
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/test
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+
   datasource:
     url: jdbc:mysql://localhost:3306/personal
     username: ji
@@ -13,6 +20,12 @@ spring:
         #show_sql: true
         format_sql: true
         default_batch_fetch_size: 100
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jws-algorithms: RS512
 
 logging:
   level:
