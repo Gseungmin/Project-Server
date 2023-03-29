@@ -84,12 +84,12 @@ public class JwtAuthorizationRsaFilter extends JwtAuthorizationFilter {
                     Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
+            } else {
+                System.out.println("토큰이 올바르지 않습니다.");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         chain.doFilter(request, response);
     }
 

@@ -4,13 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class ReturnMemberJoin {
+public class ReturnJoinDto {
 
     private Boolean isTrue;
     private String email;
-    private String accessToken;
 
-    public ReturnMemberJoin(Boolean isTrue, String email) {
+    public ReturnJoinDto(Boolean isTrue, String email) {
         this.isTrue = isTrue;
         this.email = email;
     }

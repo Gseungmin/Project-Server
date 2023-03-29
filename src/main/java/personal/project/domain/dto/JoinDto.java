@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class MemberJoin {
+public class JoinDto {
 
     private String nickname;
     private String email;
