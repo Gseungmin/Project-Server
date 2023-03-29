@@ -1,4 +1,4 @@
-package personal.project.member;
+package personal.project.domain.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +16,13 @@ public class Member {
     @Column(name = "MEMBER_ID")
     private Long id;
 
-    private String name;
+    private String nickname;
     private String email;
     private String password;
+
+    public Member(String nickname, String email, String password) {
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+    }
 }
