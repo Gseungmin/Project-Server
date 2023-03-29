@@ -1,16 +1,22 @@
 package personal.project.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import personal.project.domain.dto.JoinDto;
 import personal.project.domain.dto.ReturnJoinDto;
 import personal.project.domain.entity.Member;
 import personal.project.web.service.MemberService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 
@@ -38,10 +44,10 @@ public class LoginController {
         return new ReturnJoinDto(true, memberJoin.getEmail());
     }
 
-    @GetMapping("/api/user")
-    public Authentication user(Authentication authentication) {
-
-        return authentication;
+    /**토큰 체크*/
+    @GetMapping("/token/check")
+    public ResponseEntity<Void> tokenCheck() {
+        return ResponseEntity.ok().build();
     }
 }
 

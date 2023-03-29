@@ -59,8 +59,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
 
-        System.out.println("인증을 시작하겠습니다.");
-
         Integer Case = loginCaseCheck(request);
 
         if (Case == GOOGLE) { //구글 로그인일 경우
@@ -182,7 +180,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .build();
 
         String token = request.getHeader("Authorization");
-        System.out.println(token);
         GoogleIdToken idToken = verifier.verify(token);
         return idToken;
     }

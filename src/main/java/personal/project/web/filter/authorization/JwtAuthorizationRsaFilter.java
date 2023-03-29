@@ -1,5 +1,6 @@
 package personal.project.web.filter.authorization;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jwt.SignedJWT;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * Bearer 토큰을 RSA 알고리즘에 의해 검증하며 검증 성공시 인증 및 인가를 처리하는 필터
@@ -46,8 +49,6 @@ public class JwtAuthorizationRsaFilter extends JwtAuthorizationFilter {
 
         SignedJWT signedJWT;
         try {
-
-            System.out.println("token = " + token);
 
             /**
              * header와 payload와 signature 값이 속성으로 매핑됨
@@ -85,7 +86,9 @@ public class JwtAuthorizationRsaFilter extends JwtAuthorizationFilter {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } else {
-                System.out.println("토큰이 올바르지 않습니다.");
+                response.setStatus(200003);
+                response.setContentType(APPLICATION_JSON_VALUE);
+                response.setCharacterEncoding("utf-8");
             }
         } catch (Exception e) {
             e.printStackTrace();
