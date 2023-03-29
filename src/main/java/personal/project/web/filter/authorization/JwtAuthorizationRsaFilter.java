@@ -68,8 +68,8 @@ public class JwtAuthorizationRsaFilter extends JwtAuthorizationFilter {
                  * 토큰 발행시 username과 authority는 claim 정보에 포함시켰음
                  * 따라서 claim 정보로부터 username과 authority를 가져올 수 있음
                  */
-                String username = signedJWT.getJWTClaimsSet().getClaim("username").toString();
-                List<String> authority = (List)signedJWT.getJWTClaimsSet().getClaim("authority");
+                String username = signedJWT.getJWTClaimsSet().getClaim("id").toString();
+                List<String> authority = (List)signedJWT.getJWTClaimsSet().getClaim("role");
 
                 /**
                  * 사용자 정보를 만들어서 인증 객체 생성 후 Security Context에 보관
@@ -80,7 +80,6 @@ public class JwtAuthorizationRsaFilter extends JwtAuthorizationFilter {
                             .password(UUID.randomUUID().toString())
                             .authorities(authority.get(0))
                             .build();
-                    //권한이 하나밖에 없으므로 get(0)
 
                     Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);

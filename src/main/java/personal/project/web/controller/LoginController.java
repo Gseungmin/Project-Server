@@ -1,6 +1,7 @@
 package personal.project.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +36,12 @@ public class LoginController {
         //회원이 없는 경우 로그인
         memberService.join(member);
         return new ReturnMemberJoin(true, memberJoin.getEmail());
+    }
+
+    @GetMapping("/api/user")
+    public Authentication user(Authentication authentication) {
+
+        return authentication;
     }
 }
 
