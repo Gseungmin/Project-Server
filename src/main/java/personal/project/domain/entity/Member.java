@@ -19,10 +19,15 @@ public class Member {
     private String nickname;
     private String email;
     private String password;
+    private String profileImage;
+    private String introduction;
 
     public Member(String nickname, String email, String password) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
+    }
+
+    public Member() {
     }
 }
