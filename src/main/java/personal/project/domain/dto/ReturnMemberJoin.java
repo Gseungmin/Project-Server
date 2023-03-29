@@ -14,10 +14,4 @@ public class ReturnMemberJoin {
         this.isTrue = isTrue;
         this.email = email;
     }
-
-    public ReturnMemberJoin(Boolean isTrue, String email, String accessToken) {
-        this.isTrue = isTrue;
-        this.email = email;
-        this.accessToken = accessToken;
-    }
 }

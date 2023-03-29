@@ -26,11 +26,15 @@ public class LoginController {
         //회원이 이미 존재할 경우
         Optional<Member> findMember = memberService.findMember(memberJoin.getEmail());
         if (findMember.isPresent()) {
-            return new ReturnMemberJoin(false, findMember.get().getEmail());
+            return new ReturnMemberJoin(false, memberJoin.getEmail());
         }
 
-        memberService.join(new Member(memberJoin.getNickname(), memberJoin.getEmail(), memberJoin.getPassword()));
-        return new ReturnMemberJoin(true, findMember.get().getEmail(), "accessToken");
+        Member member = new Member(memberJoin.getNickname(), memberJoin.getEmail(), memberJoin.getPassword());
+        member.getRoles().add("USER"); //일반 유저
+
+        //회원이 없는 경우 로그인
+        memberService.join(member);
+        return new ReturnMemberJoin(true, memberJoin.getEmail());
     }
 }
 

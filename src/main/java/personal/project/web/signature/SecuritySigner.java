@@ -25,10 +25,10 @@ public abstract class SecuritySigner {
 
         List<String> authority = user.getAuthorities().stream().map(auth -> auth.getAuthority()).collect(Collectors.toList());
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject("user")
+                .subject(user.getUsername())
                 .issuer("http://localhost:8080")
-                .claim("username", user.getUsername())
-                .claim("authority", authority)
+                .claim("id", user.getUsername())
+                .claim("role", authority)
                 .expirationTime(new Date(new Date().getTime() + 60 * 60 * 60 * 1000 * 60))
                 .build();
 

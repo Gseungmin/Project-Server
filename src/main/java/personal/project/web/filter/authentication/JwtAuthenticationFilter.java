@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import personal.project.domain.dto.LoginDto;
 import personal.project.web.signature.SecuritySigner;
 
 import javax.servlet.FilterChain;
@@ -45,18 +46,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private String email;
     private String password;
 
-    /**
-     * 알고리즘과 SINGER를 추상적으로 받아 처리
-     * */
+    /**알고리즘과 SINGER를 추상적으로 받아 처리*/
     public JwtAuthenticationFilter(HttpSecurity httpSecurity, SecuritySigner securitySigner, JWK jwk) {
         this.httpSecurity = httpSecurity;
         this.securitySigner = securitySigner;
         this.jwk = jwk;
     }
 
-    /**
-     * username과 password를 받아 해결
-     * */
+    /**인증 시작*/
     @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
@@ -64,10 +61,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         System.out.println("인증을 시작하겠습니다.");
 
-        /**로그인 방식 Check*/
         Integer Case = loginCaseCheck(request);
 
-        if (Case == GOOGLE) {
+        if (Case == GOOGLE) { //구글 로그인일 경우
 
             /**idToken Check Function*/
             GoogleIdToken idToken = checkGoogleIdToken(request);
@@ -75,9 +71,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             if (idToken != null) {
                 GoogleIdToken.Payload payload = idToken.getPayload();
 
-                //user identifier
                 String userId = payload.getSubject();
-                // Get profile information from payload
                 String name = payload.getEmail();
 
                 email = name;
@@ -85,7 +79,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             } else {
                 throw new IllegalArgumentException("Invalid ID token.");
             }
-        } else if (Case == KAKAO) {
+        } else if (Case == KAKAO) { //카카오 로그인일 경우
 
             String reqURL = "https://kapi.kakao.com/v2/user/me";
 
@@ -108,45 +102,37 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     result += line;
                 }
 
-                System.out.println("response body : " + result);
-
                 JsonElement element = JsonParser.parseString(result);
 
                 String id = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
 
                 email = id;
                 password = "117069320589700689011";
-
                 br.close();
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
         } else if (Case == BASIC) {
             ObjectMapper objectMapper = new ObjectMapper();
-//            LoginDto loginDto = null;
             try {
-//
-//                loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
-//
-//                email = loginDto.getUsername();
-//                password = loginDto.getPassword();
+                LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
+                email = loginDto.getEmail();
+                password = loginDto.getPassword();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
-        System.out.println("authenticationManager = " + authenticationManager);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
-        System.out.println("authenticationToken = " + authenticationToken);
+
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
-        System.out.println("authentication = " + authentication);
-        
         return authentication;
     }
 
+    /**로그인 타입 체크*/
     private Integer loginCaseCheck(HttpServletRequest request) {
-        String value = request.getHeader("LoginCase").toString();
+        String value = request.getHeader("LoginCase");
         if (value.equals("google")) {
             System.out.println("google login start");
             return 0;
@@ -162,8 +148,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     /**
-     * 토큰을 발행하는 코드 작성
-     * 인증에 성공시 즉 객체 조회 성공시 진행되는 로직
+     * 인증에 성공시 즉 객체 조회 성공시 진행되는 로직, 토큰을 발행하는 코드 작성
      * */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws ServletException, IOException {
@@ -173,12 +158,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String jwtToken;
         try {
 
-            System.out.println("user = " + user);
-            
             //securitySigner를 통해 jwk 토큰을 받아옴
             jwtToken = securitySigner.getJwtToken(user, jwk);
-
-            System.out.println("jwtToken = " + jwtToken);
 
             //발행받은 토큰을 response 헤더에 담아 응답
             response.addHeader("Authorization", "Bearer " + jwtToken);
@@ -203,7 +184,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = request.getHeader("Authorization");
         System.out.println(token);
         GoogleIdToken idToken = verifier.verify(token);
-
         return idToken;
     }
 }

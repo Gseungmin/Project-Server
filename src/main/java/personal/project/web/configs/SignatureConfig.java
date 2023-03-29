@@ -1,4 +1,4 @@
-package personal.project.domain.dto;
+package personal.project.web.configs;
 
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;

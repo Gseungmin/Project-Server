@@ -1,4 +1,4 @@
-package personal.project.domain.dto;
+package personal.project.web.configs;
 
 import com.nimbusds.jose.jwk.RSAKey;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,21 +33,19 @@ public class OAuth2ResourceServer {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //세션을 사용하지 않음
 
-        http.authorizeRequests((requests) -> requests.antMatchers(
-                "/login",
-                "/auth/join").permitAll().anyRequest().authenticated());
+        http.authorizeRequests((requests) ->
+                requests.antMatchers("/auth/join").permitAll()
+                .anyRequest().authenticated());
 
-        /**
-         * 모든 과정을 시큐리티에 맡김
-         * jwtDecoder가 생성되어 인가서버로부터 jwtSet을 가지고 옴
-         * jwtSet안에서 토큰을 검증할 수 있는 Public 키를 가지고 옴
-         * 그리고 선택된 Public 키를 가지고 검증
-         */
+        //login url 설정
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(http, rsaSecuritySigner, rsaKey);
+        jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+
+
         //사용자 정보 로드해서 객체 생성
         http.userDetailsService(userDetailsService);
-
         //인증 필터
-        http.addFilterBefore(new JwtAuthenticationFilter(http, rsaSecuritySigner, rsaKey), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         //토큰 검증 필터
         http.addFilterBefore(new JwtAuthorizationRsaFilter(rsaKey), UsernamePasswordAuthenticationFilter.class);
 
