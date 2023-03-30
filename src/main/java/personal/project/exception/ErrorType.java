@@ -16,7 +16,9 @@ public enum ErrorType {
 
     // User 관련 에러, 2로 시작
     MEMBER_EXIST(UNAUTHORIZED, 20001, "이미 존재하는 이메일입니다."),
-    LOGIN_FAILED(UNAUTHORIZED, 20003, "아이디 또는 비밀번호가 일치하지 않습니다.");
+    BASIC_MEMBER_EXIST(UNAUTHORIZED, 20002, "일반 계정이 이미 존재합니다."),
+    KAKAO_MEMBER_EXIST(UNAUTHORIZED, 20003, "카카오 계정이 이미 존재합니다."),
+    LOGIN_FAILED(UNAUTHORIZED, 20004, "아이디 또는 비밀번호가 일치하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final int code;

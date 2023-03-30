@@ -25,13 +25,21 @@ public class Member implements UserDetails {
     private String nickname;
     private String email;
     private String password;
+    private String Type;
     private String profileImage;
     private String introduction;
 
-    public Member(String nickname, String email, String password) {
+    public Member(String nickname, String email, String password, String type) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
+        this.Type = type;
+    }
+
+    public Member(String email, String password, String type) {
+        this.email = email;
+        this.password = password;
+        this.Type = type;
     }
 
     @ElementCollection(fetch = FetchType.EAGER)
