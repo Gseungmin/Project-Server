@@ -34,8 +34,8 @@ public class OAuth2ResourceServer {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //세션을 사용하지 않음
 
         http.authorizeRequests((requests) ->
-                requests.antMatchers("/auth/join").permitAll()
-                .anyRequest().authenticated());
+                requests.antMatchers("/token/check").authenticated()
+                .anyRequest().permitAll());
 
         //login url 설정
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(http, rsaSecuritySigner, rsaKey);
