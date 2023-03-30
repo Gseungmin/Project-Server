@@ -15,7 +15,6 @@ public class CustomExceptionHandler {
     public ErrorResult customExceptionHandle(CustomException e, HttpServletRequest request) {
         log.error("[CustomException] url: {} | errorType: {} | errorMessage: {} | cause Exception: ",
                 request.getRequestURL(), e.getErrorType(), e.getMessage(), e.getCause());
-
-        return new ErrorResult(e);
+        return new ErrorResult(String.valueOf(e.getCode()), e.getErrorMessage());
     }
 }
