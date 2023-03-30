@@ -38,6 +38,11 @@ public class LoginController {
         return new ReturnJoinDto(true, memberJoin.getEmail());
     }
 
+    @PostMapping("/auth/login")
+    public ResponseEntity<Void> login() {
+        return ResponseEntity.ok().build();
+    }
+
     /**토큰 체크*/
     @GetMapping("/token/check")
     public ResponseEntity<Void> tokenCheck() {

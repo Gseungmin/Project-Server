@@ -39,7 +39,7 @@ public class OAuth2ResourceServer {
 
         //login url 설정
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(http, rsaSecuritySigner, rsaKey);
-        jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+        jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
 
         //사용자 정보 로드해서 객체 생성
         http.userDetailsService(userDetailsService);
