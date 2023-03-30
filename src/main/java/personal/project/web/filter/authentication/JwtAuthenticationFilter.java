@@ -44,8 +44,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
 
-        System.out.println("인증 시작");
-
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);

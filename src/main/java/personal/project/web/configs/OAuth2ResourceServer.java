@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import personal.project.web.filter.authentication.JwtAuthenticationFilter;
 import personal.project.web.filter.authorization.JwtAuthorizationRsaFilter;
+import personal.project.web.filter.entrypoint.CustomAuthenticationEntryPoint;
 import personal.project.web.service.CustomUserDetailsService;
 import personal.project.web.signature.RSASecuritySigner;
 
@@ -35,7 +36,8 @@ public class OAuth2ResourceServer {
 
         http.authorizeRequests((requests) ->
                 requests.antMatchers("/auth/logout", "/auth/join").permitAll()
-                .anyRequest().authenticated());
+                .anyRequest().authenticated())
+                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
         //login url 설정
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(http, rsaSecuritySigner, rsaKey);

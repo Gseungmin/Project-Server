@@ -51,28 +51,22 @@ public class JwtAuthorizationRsaFilter extends OncePerRequestFilter {
 
         ErrorType errorType = null;
 
-        /**헤더가 유효성 검사에 실패하면 다음 필터로 이동*/
+        //헤더 검사
         if (tokenResolve(request, response, chain)){
             errorType = TOKEN_NOT_EXIST;
         } else {
-
-            /**Bearer를 제거한 토큰 값만 추출(header + payload + signature)*/
-            String token = getToken(request);
+            String token = getToken(request); //Bearer를 제거한 토큰 값만 추출(header + payload + signature)
             SignedJWT signedJWT;
             try {
-                /**header와 payload와 signature 값이 속성으로 매핑됨*/
-                signedJWT = SignedJWT.parse(token);
 
+                signedJWT = SignedJWT.parse(token); //header와 payload와 signature 값이 속성으로 매핑됨
                 RSASSAVerifier jwsVerifier = new RSASSAVerifier(jwk.toRSAPublicKey());
-
-                /**검증 로직여러 verifier 종류가 존재하는데 주입 받은 값으로 검증*/
                 boolean verify = signedJWT.verify(jwsVerifier);
 
                 if (verify) {
                     String username = signedJWT.getJWTClaimsSet().getClaim("id").toString();
                     List<String> authority = (List) signedJWT.getJWTClaimsSet().getClaim("role");
-
-                    /**사용자 정보를 만들어서 인증 객체 생성 후 Security Context에 보관*/
+                    //사용자 정보를 만들어서 인증 객체 생성 후 Security Context에 보관
                     if (username != null) {
                         UserDetails user = User.builder().username(username)
                                 .password(UUID.randomUUID().toString())
@@ -81,7 +75,6 @@ public class JwtAuthorizationRsaFilter extends OncePerRequestFilter {
                         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
-                    chain.doFilter(request, response); //다음 필터로 넘어감
                 } else {
                     errorType = TOKEN_INVALID;
                 }
@@ -89,15 +82,11 @@ public class JwtAuthorizationRsaFilter extends OncePerRequestFilter {
                 errorType = TOKEN_INVALID;
             }
         }
-
+        //예외가 발생할 경우 예외 저장
         if (errorType != null) {
-            response.setStatus(errorType.getCode());
-            response.setContentType(APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding("utf-8");
-            ErrorResult errorResult = new ErrorResult(String.valueOf(errorType.getCode()), errorType.getErrorMessage());
-
-            System.out.println(errorType);
+            request.setAttribute("exception", errorType);
         }
+        chain.doFilter(request, response); //다음 필터로 넘어감
     }
 
     /**Authorization 헤더 명으로 값이 넘어옴*/
