@@ -11,9 +11,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import personal.project.web.filter.authentication.JwtAuthenticationFilter;
+import personal.project.web.filter.authentication.JwtKakaoAuthenticationFilter;
 import personal.project.web.filter.authorization.JwtAuthorizationRsaFilter;
 import personal.project.web.filter.entrypoint.CustomAuthenticationEntryPoint;
 import personal.project.web.service.CustomUserDetailsService;
+import personal.project.web.service.MemberService;
 import personal.project.web.signature.RSASecuritySigner;
 
 @EnableWebSecurity
@@ -28,6 +30,9 @@ public class OAuth2ResourceServer {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    @Autowired
+    private MemberService memberService;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -40,15 +45,18 @@ public class OAuth2ResourceServer {
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
         //login url 설정
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(http, rsaSecuritySigner, rsaKey);
+        JwtAuthenticationFilter jwtAuthenticationFilter =
+                new JwtAuthenticationFilter(http, rsaSecuritySigner, rsaKey, memberService);
         jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
+        JwtKakaoAuthenticationFilter jwtKakaoAuthenticationFilter =
+                new JwtKakaoAuthenticationFilter(http, rsaSecuritySigner, rsaKey, memberService);
+        jwtKakaoAuthenticationFilter.setFilterProcessesUrl("/auth/kakao");
 
         //사용자 정보 로드해서 객체 생성
         http.userDetailsService(userDetailsService);
         //인증 필터
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        //토큰 검증 필터
-        http.addFilterBefore(new JwtAuthorizationRsaFilter(rsaKey), UsernamePasswordAuthenticationFilter.class);
+        http.addFilter(jwtAuthenticationFilter).addFilter(jwtKakaoAuthenticationFilter)
+                .addFilterBefore(new JwtAuthorizationRsaFilter(rsaKey), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

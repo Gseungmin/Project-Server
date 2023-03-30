@@ -17,4 +17,12 @@ public class CustomExceptionHandler {
                 request.getRequestURL(), e.getErrorType(), e.getMessage(), e.getCause());
         return new ErrorResult(String.valueOf(e.getCode()), e.getErrorMessage());
     }
+
+    // CustomException 처리
+    @ExceptionHandler(LoginException.class)
+    public ErrorResult loginExceptionHandle(CustomException e, HttpServletRequest request) {
+        log.error("[CustomException] url: {} | errorType: {} | errorMessage: {} | cause Exception: ",
+                request.getRequestURL(), e.getErrorType(), e.getMessage(), e.getCause());
+        return new ErrorResult(String.valueOf(e.getCode()), e.getErrorMessage());
+    }
 }
