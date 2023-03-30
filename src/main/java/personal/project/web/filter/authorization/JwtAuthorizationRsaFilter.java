@@ -33,16 +33,20 @@ public class JwtAuthorizationRsaFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
+        System.out.println("인가 시작");
+
         /**헤더가 유효성 검사에 실패하면 다음 필터로 이동*/
         if (tokenResolve(request, response, chain)){
             chain.doFilter(request,response);
             return;
         }
+        
         /**Bearer를 제거한 토큰 값만 추출(header + payload + signature)*/
         String token = getToken(request);
 
         SignedJWT signedJWT;
         try {
+
             /**header와 payload와 signature 값이 속성으로 매핑됨*/
             signedJWT = SignedJWT.parse(token);
 

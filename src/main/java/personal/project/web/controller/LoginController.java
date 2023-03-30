@@ -43,6 +43,11 @@ public class LoginController {
     public ResponseEntity<Void> tokenCheck() {
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/auth/logout")
+    public ResponseEntity<Void> logout() {
+        return ResponseEntity.ok().build();
+    }
 }
 
 
