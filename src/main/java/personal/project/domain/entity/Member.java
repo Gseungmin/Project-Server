@@ -1,5 +1,6 @@
 package personal.project.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,6 +29,10 @@ public class Member implements UserDetails {
     private String Type;
     private String profileImage;
     private String introduction;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    private List<Project> projects = new ArrayList<>();
 
     public Member(String nickname, String email, String password, String type) {
         this.nickname = nickname;
