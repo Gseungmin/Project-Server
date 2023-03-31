@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import personal.project.domain.dto.OpenGraphDto;
+import personal.project.domain.dto.UploadDto;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -35,6 +36,16 @@ public class Project {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
+
+    public Project(UploadDto uploadDto) {
+        this.category = uploadDto.getCategory();
+        this.content = uploadDto.getContent();
+        this.title = uploadDto.getTitle();
+        this.image = uploadDto.getImage();
+        this.linkTitle = uploadDto.getLinkTitle();
+        this.linkUrl = uploadDto.getLinkUrl();
+        this.linkImage = uploadDto.getLinkImage();
+    }
 
     //project member 양방향 연관관계
     public void addMember(Member member) {
