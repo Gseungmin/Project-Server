@@ -29,6 +29,9 @@ public class Member implements UserDetails {
     private String profileImage;
     private String introduction;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    private List<Project> projects = new ArrayList<>();
+
     public Member(String nickname, String email, String password, String type) {
         this.nickname = nickname;
         this.email = email;
