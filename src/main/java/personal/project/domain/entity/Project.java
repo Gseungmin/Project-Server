@@ -35,4 +35,10 @@ public class Project {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
+
+    //project member 양방향 연관관계
+    public void addMember(Member member) {
+        this.member = member;
+        member.getProjects().add(this);
+    }
 }
