@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static personal.project.exception.ErrorType.TOKEN_INVALID;
 import static personal.project.exception.ErrorType.TOKEN_NOT_EXIST;
 
@@ -43,7 +42,9 @@ public class JwtAuthorizationRsaFilter extends OncePerRequestFilter {
         String path = request.getServletPath();
         request.getMethod();
         AntPathMatcher pathMatcher = new AntPathMatcher();
-        return (pathMatcher.match("/auth/join", path) || pathMatcher.match("/auth/kakao", path));
+        return (pathMatcher.match("/auth/join", path)
+                || pathMatcher.match("/auth/kakao", path)
+                || pathMatcher.match("/search", path));
     }
 
     @Override

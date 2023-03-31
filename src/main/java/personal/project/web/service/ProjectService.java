@@ -17,7 +17,6 @@ import java.util.Optional;
 @Transactional
 public class ProjectService {
 
-    private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
 
     /**모든 프로젝트 조회*/
