@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import personal.project.domain.dto.ReturnProjectDetailDto;
 import personal.project.domain.dto.ReturnProjectDto;
 import personal.project.domain.dto.ReturnProjectDtos;
 import personal.project.domain.dto.UploadDto;
@@ -43,6 +44,26 @@ public class ProjectController {
         List<ReturnProjectDto> collect = all.stream().map(project -> new ReturnProjectDto(project)).collect(Collectors.toList());
         ReturnProjectDtos returnProjectDtos = new ReturnProjectDtos(collect);
         return returnProjectDtos;
+    }
+
+    @GetMapping("/project/{projectId}")
+    public ReturnProjectDetailDto getProject(@PathVariable("projectId") Long projectId, Authentication authentication) {
+
+        Optional<Project> findProject = projectService.findProject(projectId);
+        Project project = findProject.get();
+
+        Optional<Member> findAuthMember = memberService.findMember(authentication.getName());
+        Member authMember = findAuthMember.get(); //토큰 멤버 정보
+        Optional<Member> findWriterMember = memberService.findMember(project.getMember().getEmail());
+        Member writerMember = findWriterMember.get(); //작성자 멤버 정보
+
+        ReturnProjectDetailDto projectDto = new ReturnProjectDetailDto(project);
+
+        //토큰 멤버와 작성자가 같은 경우
+        if (authMember.getId().equals(writerMember.getId())) {
+            projectDto.setIsMy(true); //true 리턴
+        }
+        return projectDto;
     }
 }
 

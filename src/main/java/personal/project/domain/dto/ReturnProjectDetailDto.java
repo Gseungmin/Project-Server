@@ -4,28 +4,33 @@ import lombok.Getter;
 import lombok.Setter;
 import personal.project.domain.entity.Project;
 
-import java.util.List;
-
 @Getter @Setter
-public class ReturnProjectDto {
+public class ReturnProjectDetailDto {
 
     private Long projectId;
     private String content;
     private String title;
-    private String thumbnailImage;
+    private String nickname;
+    private String image;
+    private String profileImage;
     private Integer state;
     private Integer likeCount;
     private Integer commentCount;
     private Integer view;
+    private Boolean isLiked;
+    private Boolean isMy;
+    private OpenGraphDto link;
 
-    public ReturnProjectDto(Project project) {
+    public ReturnProjectDetailDto(Project project) {
         this.projectId = project.getId();
         this.content = project.getContent();
         this.title = project.getTitle();
-        this.thumbnailImage = project.getImage();
+        this.image = project.getImage();
+        this.profileImage = project.getMember().getProfileImage();
         this.state = project.getCategory();
         this.likeCount = project.getLikeCount();
         this.commentCount = project.getCommentCount();
         this.view = project.getViewCount();
+        this.link = new OpenGraphDto(project);
     }
 }

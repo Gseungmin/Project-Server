@@ -28,6 +28,9 @@ public class Project {
     private String content;
     private String title;
     private String image;
+    private Integer likeCount;
+    private Integer viewCount;
+    private Integer commentCount;
 
     //opengraph
     private String linkTitle;
@@ -47,6 +50,9 @@ public class Project {
         this.linkTitle = uploadDto.getLinkTitle();
         this.linkUrl = uploadDto.getLinkUrl();
         this.linkImage = uploadDto.getLinkImage();
+        this.likeCount = 0;
+        this.commentCount = 0;
+        this.viewCount = 0;
     }
 
     //project member 양방향 연관관계
