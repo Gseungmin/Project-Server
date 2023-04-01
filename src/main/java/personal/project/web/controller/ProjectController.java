@@ -96,6 +96,7 @@ public class ProjectController {
         //양방향 연관관계 설정
         comment.addProject(project);
         comment.addMember(member);
+        project.setCommentCount(project.getCommentCount()+1);
 
         commentService.save(comment);
 
