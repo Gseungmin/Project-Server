@@ -40,6 +40,10 @@ public class Project {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
     private List<Comment> comments = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
+    private List<Likes> likes = new ArrayList<>();
+
     public Project(UploadDto uploadDto) {
         this.category = uploadDto.getCategory();
         this.content = uploadDto.getContent();
