@@ -6,13 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import personal.project.domain.dto.JoinDto;
-import personal.project.domain.dto.ReturnJoinDto;
+import personal.project.domain.dto.post.JoinDto;
+import personal.project.domain.dto.get.ReturnJoinDto;
 import personal.project.domain.entity.Member;
-import personal.project.domain.entity.MemberType;
 import personal.project.exception.CustomException;
-import personal.project.exception.ErrorType;
-import personal.project.exception.LoginException;
 import personal.project.web.service.MemberService;
 
 import java.util.Optional;

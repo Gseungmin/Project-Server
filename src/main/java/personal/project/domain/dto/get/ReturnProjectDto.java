@@ -1,4 +1,4 @@
-package personal.project.domain.dto;
+package personal.project.domain.dto.get;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,8 +24,8 @@ public class ReturnProjectDto {
         this.title = project.getTitle();
         this.thumbnailImage = project.getImage();
         this.state = project.getCategory();
-        this.likeCount = 0;
-        this.commentCount = 0;
-        this.view = 0;
+        this.likeCount = project.getLikeCount();
+        this.commentCount = project.getCommentCount();
+        this.view = project.getViewCount();
     }
 }

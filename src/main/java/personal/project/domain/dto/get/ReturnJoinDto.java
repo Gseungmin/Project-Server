@@ -1,4 +1,4 @@
-package personal.project.domain.dto;
+package personal.project.domain.dto.get;
 
 import lombok.Getter;
 import lombok.Setter;
