@@ -83,6 +83,8 @@ public class ProjectController {
         comment.addProject(project);
         comment.addMember(member);
 
+        commentService.save(comment);
+
         return ResponseEntity.ok().build();
     }
 
