@@ -2,17 +2,11 @@ package personal.project.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import personal.project.domain.dto.OpenGraphDto;
-import personal.project.domain.dto.UploadDto;
+import personal.project.domain.dto.post.UploadDto;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter @Setter
@@ -41,6 +35,10 @@ public class Project {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
+    private List<Comment> comments = new ArrayList<>();
 
     public Project(UploadDto uploadDto) {
         this.category = uploadDto.getCategory();

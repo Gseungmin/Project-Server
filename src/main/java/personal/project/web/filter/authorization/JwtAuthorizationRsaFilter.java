@@ -44,7 +44,8 @@ public class JwtAuthorizationRsaFilter extends OncePerRequestFilter {
         AntPathMatcher pathMatcher = new AntPathMatcher();
         return (pathMatcher.match("/auth/join", path)
                 || pathMatcher.match("/auth/kakao", path)
-                || pathMatcher.match("/search", path));
+                || pathMatcher.match("/search", path)
+                || pathMatcher.match("/comments/**", path));
     }
 
     @Override

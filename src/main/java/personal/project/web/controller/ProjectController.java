@@ -4,12 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import personal.project.domain.dto.ReturnProjectDetailDto;
-import personal.project.domain.dto.ReturnProjectDto;
-import personal.project.domain.dto.ReturnProjectDtos;
-import personal.project.domain.dto.UploadDto;
+import personal.project.domain.dto.get.*;
+import personal.project.domain.dto.post.CommentDto;
+import personal.project.domain.dto.post.UploadDto;
+import personal.project.domain.entity.Comment;
 import personal.project.domain.entity.Member;
 import personal.project.domain.entity.Project;
+import personal.project.web.service.CommentService;
 import personal.project.web.service.MemberService;
 import personal.project.web.service.ProjectService;
 
@@ -23,6 +24,7 @@ public class ProjectController {
 
     private final MemberService memberService;
     private final ProjectService projectService;
+    private final CommentService commentService;
 
     /**프로젝트 업로드*/
     @PostMapping("/upload/project")
@@ -64,6 +66,33 @@ public class ProjectController {
             projectDto.setIsMy(true); //true 리턴
         }
         return projectDto;
+    }
+
+    /**댓글 업로드*/
+    @PostMapping("/upload/comment")
+    public ResponseEntity uploadComment(@RequestBody CommentDto commentDto, Authentication authentication) {
+
+        Optional<Member> findMember = memberService.findMember(authentication.getName());
+        Member member = findMember.get();
+        Optional<Project> findProject = projectService.findProject(commentDto.getProjectId());
+        Project project = findProject.get();
+
+        Comment comment = new Comment(commentDto.getContent());
+
+        //양방향 연관관계 설정
+        comment.addProject(project);
+        comment.addMember(member);
+
+        return ResponseEntity.ok().build();
+    }
+
+    /**프로젝트 댓글 목록 조회*/
+    @GetMapping("/comments/{projectId}")
+    public ReturnCommentDtos getComments(@PathVariable("projectId") Long projectId) {
+        List<Comment> all = commentService.findAll(projectId);
+        List<ReturnCommentDto> collect = all.stream().map(comment -> new ReturnCommentDto(comment)).collect(Collectors.toList());
+        ReturnCommentDtos returnCommentDtos = new ReturnCommentDtos(collect);
+        return returnCommentDtos;
     }
 }
 

@@ -40,7 +40,7 @@ public class OAuth2ResourceServer {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //세션을 사용하지 않음
 
         http.authorizeRequests((requests) ->
-                requests.antMatchers("/auth/logout", "/auth/join", "/search").permitAll()
+                requests.antMatchers("/auth/logout", "/auth/join", "/search", "/comments/**").permitAll()
                 .anyRequest().authenticated())
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
