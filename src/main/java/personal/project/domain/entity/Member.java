@@ -38,6 +38,9 @@ public class Member implements UserDetails {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    private List<Likes> likes = new ArrayList<>();
 
     public Member(String nickname, String email, String password, String type) {
         this.nickname = nickname;
