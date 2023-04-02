@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+
+  database-mysql:
+    container_name: database-mysql
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '1234'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: 'personal'
+      TZ: Asia/Seoul
+    volumes:
+      - ./db/data:/var/lib/mysql
+      - ./db/conf.d:/etc/mysql/conf.d
+      - ./db/mysql.d/create_table.sql:/docker-entrypoint-initdb.d/create_table.sql
+    ports:
+      - '3306:3306'
+    command:
+      - 'mysqld'
+      - '--character-set-server=utf8mb4'
+      - '--collation-server=utf8mb4_unicode_ci'
+    restart: always
+    networks:
+      - test_network
+
+  server:
+    container_name: spring-project
+    restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database-mysql:3306/personal?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "1234"
+    depends_on:
+      - database-mysql
+    networks:
+      - test_network
+
+networks:
+  test_network:
