@@ -7,7 +7,7 @@ services:
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: '1234'
-      MYSQL_ROOT_HOST: 'ji'
+      MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: 'personal'
       TZ: Asia/Seoul
     volumes:
@@ -20,10 +20,9 @@ services:
       - '--collation-server=utf8mb4_unicode_ci'
     restart: always
 
-  application:
+  server:
     container_name: spring-project
     build: ./
-    restart: always
     ports:
       - '80:8080'
     depends_on:

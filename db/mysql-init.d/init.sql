@@ -1,5 +1,5 @@
-CREATE USER 'personal'@'localhost' IDENTIFIED BY 'personal';
-CREATE USER 'personal'@'%' IDENTIFIED BY 'personal';
+CREATE USER 'personal'@'localhost' IDENTIFIED BY '1234';
+CREATE USER 'personal'@'%' IDENTIFIED BY '1234';
 
 GRANT ALL PRIVILEGES ON *.* TO 'personal'@'localhost';
 GRANT ALL PRIVILEGES ON *.* TO 'personal'@'%';
@@ -7,7 +7,6 @@ GRANT ALL PRIVILEGES ON *.* TO 'personal'@'%';
 CREATE DATABASE IF NOT EXISTS personal DEFAULT CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT ENCRYPTION='N';
 USE personal;
 
-drop table if exists comment;
 drop table if exists hibernate_sequence;
 drop table if exists likes;
 drop table if exists member;
