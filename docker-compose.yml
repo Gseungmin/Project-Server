@@ -22,7 +22,7 @@ services:
 
   application:
     container_name: spring-project
-    build: ../
+    build: ./
     restart: always
     ports:
       - '80:8080'
