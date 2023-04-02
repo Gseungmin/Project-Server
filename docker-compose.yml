@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  database-mysql:
+    container_name: database-mysql
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '1234'
+      MYSQL_ROOT_HOST: 'ji'
+      MYSQL_DATABASE: 'personal'
+      TZ: Asia/Seoul
+    volumes:
+      - ./mysql-init.d:/docker-entrypoint-initdb.d
+    ports:
+      - '3306:3306'
+    command:
+      - '--character-set-server=utf8mb4'
+      - '--collation-server=utf8mb4_unicode_ci'
+    restart: always
+
+  application:
+    container_name: spring-project
+    build: ../
+    restart: always
+    ports:
+      - '80:8080'
+    depends_on:
+      - database-mysql
