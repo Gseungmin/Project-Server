@@ -11,7 +11,8 @@ services:
       MYSQL_DATABASE: 'personal'
       TZ: Asia/Seoul
     volumes:
-      - ./mysql-init.d:/docker-entrypoint-initdb.d
+      - ./db/conf.d:/etc/mysql/conf.d
+      - ./db/mysql-init.d:/docker-entrypoint-initdb.d
     ports:
       - '3306:3306'
     command:
