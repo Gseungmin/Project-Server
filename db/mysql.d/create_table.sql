@@ -55,6 +55,7 @@ create table `project` (
      `link_image` varchar(255),
      `link_title` varchar(255),
      `link_url` varchar(255),
+     `sort` integer,
      `title` varchar(255),
      `view_count` integer,
      `member_id` bigint,
