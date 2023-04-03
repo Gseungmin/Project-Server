@@ -25,6 +25,7 @@ public class Project {
     private Integer likeCount;
     private Integer viewCount;
     private Integer commentCount;
+    private Integer sort;
 
     //opengraph
     private String linkTitle;
