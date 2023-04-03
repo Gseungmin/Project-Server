@@ -15,6 +15,9 @@ on:
 permissions:
   contents: read
 
+env:
+  S3_BUCKET_NAME: ji-project-test
+
 jobs:
   build:
 
@@ -42,3 +45,39 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build
+    
+    - name: Make zip file
+      run: zip -r ./$GITHUB_SHA.zip .
+      shell: bash
+
+    - name: Make Directory
+      run: mkdir -p deploy
+
+    - name: Copy Jar
+      run: cp ./build/libs/*.jar ./deploy
+
+    - name: Copy appspec.yml
+      run: cp appspec.yml ./deploy
+
+    - name: Copy script
+      run: cp ./scripts/*.sh ./deploy
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Upload to S3
+      run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
+    
+    - name: Deploy
+      run: |
+        aws deploy create-deployment \
+        --application-name ji \
+        --deployment-config-name CodeDeployDefault.AllAtOnce \
+        --deployment-group-name ji \
+        --file-exists-behavior OVERWRITE \
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip \
+        --region ap-northeast-2 \
