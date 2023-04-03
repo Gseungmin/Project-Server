@@ -1,5 +1,6 @@
 package personal.project.domain.dto.get;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.Setter;
 import personal.project.domain.entity.Project;
@@ -18,6 +19,7 @@ public class ReturnProjectDto {
     private Integer commentCount;
     private Integer view;
 
+    @QueryProjection
     public ReturnProjectDto(Project project) {
         this.projectId = project.getId();
         this.content = project.getContent();

@@ -45,10 +45,11 @@ public class ProjectController {
 
     //프로젝트 목록 조회
     @GetMapping("/search")
-    public ReturnProjectDtos search(@RequestParam(value = "query") String query) {
-        List<Project> all = projectService.findAll();
-        List<ReturnProjectDto> collect = all.stream().map(project -> new ReturnProjectDto(project)).collect(Collectors.toList());
-        ReturnProjectDtos returnProjectDtos = new ReturnProjectDtos(collect);
+    public ReturnProjectDtos search(@RequestParam(value = "query") String query,
+                                    @RequestParam(value = "sort") Integer sort) {
+
+        List<ReturnProjectDto> all = projectService.findAll(query, sort);
+        ReturnProjectDtos returnProjectDtos = new ReturnProjectDtos(all);
         return returnProjectDtos;
     }
 
