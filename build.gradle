@@ -1,4 +1,13 @@
+//query dsl
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
 plugins {
+	//query dsl
+	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 	id 'java'
 	id 'org.springframework.boot' version '2.7.10'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
@@ -36,8 +45,32 @@ dependencies {
 	implementation 'com.google.api-client:google-api-client:1.32.1'
 
 	runtimeOnly 'com.h2database:h2'
+
+	//query dsl
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+/**Step3 querydsl 추가 시작*/
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+sourceSets {
+	main.java.srcDir querydslDir
+}
+compileQuerydsl{
+	options.annotationProcessorPath = configurations.querydsl
+}
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	querydsl.extendsFrom compileClasspath
 }
