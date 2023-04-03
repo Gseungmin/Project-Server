@@ -57,6 +57,7 @@ jobs:
 
     - name: Copy script
       run: cp ./scripts/*.sh ./deploy
+      
 
     - name: Make zip file
       run: zip -r ./project.zip ./deploy
@@ -76,4 +77,4 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      run: aws deploy create-deployment --application-name ji-deploy --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name ji-deploy --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
+      run: aws deploy create-deployment --application-name ji-deploy --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name ji-deploy --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip --region ap-northeast-2
