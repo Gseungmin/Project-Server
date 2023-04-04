@@ -9,14 +9,16 @@ name: CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
 
 env:
   S3_BUCKET_NAME: ji-project-test
 
 jobs:
   build:
-
+    name: CD
     runs-on: ubuntu-latest
 
     steps:
@@ -36,26 +38,15 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+        shell: bash
 
       - name: Build with Gradle
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
         with:
           arguments: build
 
-      - name: Make Directory
-        run: mkdir -p deploy
-
-      - name: Copy Jar to deploy
-        run: cp ./build/libs/*.jar ./deploy
-
-      - name: Copy appspec.yml to deploy
-        run: cp appspec.yml ./deploy
-
-      - name: Copy script to deploy
-        run: cp ./scripts/*.sh ./deploy
-
       - name: Make zip file
-        run: zip -r ./project.zip ./deploy
+        run: zip -r ./project.zip .
         shell: bash
 
       - name: Configure AWS credentials
@@ -66,7 +57,10 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./project.zip s3://$S3_BUCKET_NAME/
+        run: aws s3 cp --region ap-northeast-2 ./project.zip s3://$S3_BUCKET_NAME/project.zip
+
+      - name: Copy script to deploy
+        run: cp ./scripts/*.sh ./deploy
 
       - name: Deploy
         run: |
