@@ -20,5 +20,5 @@
 * AWS S3
 * AWS CodeDeploy
 #### Database
-* MySQL (Local, Deploy DB)
+* MySQL (Local DB)
 * H2 (In-memory Test DB)
