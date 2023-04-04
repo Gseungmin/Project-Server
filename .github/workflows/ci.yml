@@ -9,13 +9,13 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ develop ]
 
 jobs:
   build:
-
+    name: CI
     runs-on: ubuntu-latest
 
     steps:
