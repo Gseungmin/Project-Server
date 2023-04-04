@@ -10,9 +10,7 @@ name: CD
 on:
   push:
     branches: [ develop ]
-  pull_request:
-    branches: [ develop ]
-
+    
 env:
   S3_BUCKET_NAME: ji-project-test
 
