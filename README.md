@@ -9,9 +9,10 @@
   - [x]  지연 로딩과 패치 조인을 사용한 쿼리 성능 최적화
 - 남은 목표
   - [ ]  Planet Scale DB 사용해보기
-  - [ ]  [Docker + Elastic Beanstalk +Github actions 함께 사용해보기](https://meaningland02.tistory.com/60)
+  - [ ]  [Docker + Elastic Beanstalk +Github actions 사용해보기](https://meaningland02.tistory.com/60)
   - [ ]  쿠버네티스를 통한 컨테이너 관리
   - [ ]  RabbitMQ나 AWS SQS 사용해보기
+  - [ ]  [Spring + Redis 사용해보기](https://velog.io/@backtony/Spring-Redis-%EC%97%B0%EB%8F%99%ED%95%98%EA%B8%B0)
 
 ## 🌇 프로젝트를 통해 알게된 점
 * Spring Security 인증 및 인가 예외 처리
