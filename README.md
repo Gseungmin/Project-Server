@@ -60,3 +60,4 @@ docker-compose up --build -d
 #### Database
 * MySQL (Local DB)
 * H2 (In-memory Test DB)
+* Planet Scale (Server DB 예정)
