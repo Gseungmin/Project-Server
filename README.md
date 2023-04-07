@@ -17,8 +17,16 @@
 ## 🌇 프로젝트를 통해 알게된 점
 * Spring Security 인증 및 인가 예외 처리
   * AuthenticationEntryPoint 클래스를 통해 인증 및 인가 예외 처리
+* 도커 파일 및 도커 컴포즈에 대한 이해
+* CI와 Mysql을 함께 사용하기 위해서는 Mysql 서버를 CI 스크립트로 올려야 함
 * CodeDeploy를 통한 배포 자동화 프로세스
   * [프로세스 정리 페이지](https://jseungmin.notion.site/CodeDeploy-b8bf7114b60f475bafb2883f9223361d)
+* 제대로 구현한것 같은데 정상 작동이 안되면 1000000000% 내잘못..ㅎㅎ
+  * CodeDeploy 정상 배포 후 EC2에 반영이 안되는 문제 발견
+  * 구글링등 계속 잘못된 부분을 찾아봤지만 결국 찾지못하는 삽질을 함
+  * EC2 문제인가 싶어 Ubuntu 이미지 대신 Linux 이미지 사용해봤지만 또 안됨
+  * 로그 확인 결과 자바 버전문제..ㅎㅎ, EC2에 1.8버전이 깔려있어서 안되는 것이었음
+  * OpenJDK 11로 업데이트후 정상 작동 확인
 
 ## 🌨 아키텍처
 <img width="800" src="https://user-images.githubusercontent.com/87487149/229875743-719d2dbe-9a0c-447c-ac38-fc8e1745dcd6.jpg">
