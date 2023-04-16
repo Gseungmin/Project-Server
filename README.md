@@ -8,28 +8,27 @@
   - [x]  Exception Handler를 통한 예외 처리
   - [x]  지연 로딩과 패치 조인을 사용한 쿼리 성능 최적화
 - 남은 목표
-  - [ ]  Planet Scale DB 사용해보기
-  - [ ]  [Docker + Elastic Beanstalk +Github actions 사용해보기](https://meaningland02.tistory.com/60)
-  - [ ]  쿠버네티스를 통한 컨테이너 관리
-  - [ ]  RabbitMQ나 AWS SQS 사용해보기
-  - [ ]  [Spring + Redis 사용해보기](https://velog.io/@backtony/Spring-Redis-%EC%97%B0%EB%8F%99%ED%95%98%EA%B8%B0)
+  - [ ] 무중단 배포 해보기
 
 ## 🌇 프로젝트를 통해 알게된 점
-* Spring Security 인증 및 인가 예외 처리
-  * AuthenticationEntryPoint 클래스를 통해 인증 및 인가 예외 처리
-* 도커 파일 및 도커 컴포즈에 대한 이해
-* CI와 Mysql을 함께 사용하기 위해서는 Mysql 서버를 CI 스크립트로 올려야 함
-* CodeDeploy를 통한 배포 자동화 프로세스
-  * [프로세스 정리 페이지](https://jseungmin.notion.site/CodeDeploy-b8bf7114b60f475bafb2883f9223361d)
-* 제대로 구현한것 같은데 정상 작동이 안되면 1000000000% 내잘못..ㅎㅎ
-  * CodeDeploy 정상 배포 후 EC2에 반영이 안되는 문제 발견
-  * 구글링등 계속 잘못된 부분을 찾아봤지만 결국 찾지못하는 삽질을 함
-  * EC2 문제인가 싶어 Ubuntu 이미지 대신 Linux 이미지 사용해봤지만 또 안됨
-  * 로그 확인 결과 자바 버전문제..ㅎㅎ, EC2에 1.8버전이 깔려있어서 안되는 것이었음
-  * OpenJDK 11로 업데이트후 정상 작동 확인
+- Spring Security는 필터 기반이라 @RestControllerAdvice의 적용 범위를 벗어남
+  - AuthenticationEntryPoint 클래스를 통해 인증 및 인가 예외 처리해야 함
+- Mysql과 CI 사용할때 DB가 설치되어 있지 않아 빌드 에러가 발생함
+  - CI 스크립트에서 Mysql 서버를 올려야 함
+- 도커 컴포즈에서 volume을 통해 DB 스키마 생성
+  ``` volumes:
+  - ./db/mysql.d/create_table.sql:/docker-entrypoint-initdb.d/create_table.sql
+- CodeDeploy를 통한 배포 자동화 프로세스
+  - 다운타임이 발생하는 아쉬움을 통해 무중단 배포라는 새로운 공부 목표를 가짐
 
 ## 🌨 아키텍처
 <img width="800" src="https://user-images.githubusercontent.com/87487149/229875743-719d2dbe-9a0c-447c-ac38-fc8e1745dcd6.jpg">
+
+## 🌨 ERD
+<img width="400" src="https://user-images.githubusercontent.com/87487149/232273356-c7629197-1311-464a-bbd2-52103efdfce8.png">
+
+## 주요 기능에 대한 영상 정리
+[정리](https://jseungmin.notion.site/b59d6627bf0042fb8955e3d3a7c5607e)
 
 ## 로컬에서 Docker 실행
 #### 1. 빌드
@@ -60,4 +59,3 @@ docker-compose up --build -d
 #### Database
 * MySQL (Local DB)
 * H2 (In-memory Test DB)
-* Planet Scale (Server DB 예정)
