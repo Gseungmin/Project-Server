@@ -13,16 +13,26 @@
 - 남은 목표
   - [ ] 무중단 배포 해보기
 
-## 🌇 프로젝트를 통해 알게된 점
-- Spring Security는 필터 기반이라 @RestControllerAdvice의 적용 범위를 벗어남
-  - AuthenticationEntryPoint 클래스를 통해 인증 및 인가 예외 처리해야 함
-- Mysql과 CI 사용할때 DB가 설치되어 있지 않아 빌드 에러가 발생함
-  - CI 스크립트에서 Mysql 서버를 올려야 함
+## ❄ 프로젝트를 통해 배운점
+- Spring Security는 필터 기반이라 @RestControllerAdvice의 적용 범위를 벗어납니다.
+    - AuthenticationEntryPoint 클래스를 통해 인증 및 인가 예외 처리해야 함
+- Mysql과 CI 사용할때 DB가 설치되어 있지 않아 빌드 에러가 발생
+    - CI 스크립트에서 Mysql 서버를 올려야 함
 - 도커 컴포즈에서 volume을 통해 DB 스키마 생성
-  ``` volumes:
-  - ./db/mysql.d/create_table.sql:/docker-entrypoint-initdb.d/create_table.sql
+    
+    ```
+    volumes:
+      - ./db/mysql.d/create_table.sql:/docker-entrypoint-initdb.d/create_table.sql
+    ```
+    
 - CodeDeploy를 통한 배포 자동화 프로세스
-  - 다운타임이 발생하는 아쉬움을 통해 무중단 배포라는 새로운 공부 목표를 가짐
+    - [CodeDeploy 프로세스 정리 페이지](https://www.notion.so/CodeDeploy-b8bf7114b60f475bafb2883f9223361d)
+    - 다운타임의 발생이 아쉬웠습니다.
+        - 무중단 배포에 대해 하루 날 잡고 공부해볼 예정
+        - 개념 자체는 쿠버네티스 롤링 업데이트와 비슷할 것으로 생각
+- Docker를 통한 CI/CD 프로세스
+    - [Docker를 통해 CI/CD를 구현해본 리포지토리입니다.](https://github.com/Gseungmin/docker-cd)
+    - [Docker CI/CD 프로세스를 정리한 페이지입니다.](https://www.notion.so/Docker-CD-69e82314611f41efad9cc8bd74663243)
 
 ## 🌨 아키텍처
 <img width="800" src="https://user-images.githubusercontent.com/87487149/229875743-719d2dbe-9a0c-447c-ac38-fc8e1745dcd6.jpg">
