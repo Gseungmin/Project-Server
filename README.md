@@ -35,7 +35,8 @@
     - [Docker CI/CD 프로세스를 정리한 페이지입니다.](https://www.notion.so/Docker-CD-69e82314611f41efad9cc8bd74663243)
 
 ## 🌨 아키텍처
-<img width="800" src="https://user-images.githubusercontent.com/87487149/229875743-719d2dbe-9a0c-447c-ac38-fc8e1745dcd6.jpg">
+<img width="800" src="https://github.com/Gseungmin/Server/assets/87487149/87fbd729-23f7-4a3e-881f-c48252c15e97">
+<img width="800" src="https://github.com/Gseungmin/Server/assets/87487149/88e3d0e3-4607-4823-84fc-caac648d0b98">
 
 ## 🌨 ERD
 <img width="400" src="https://user-images.githubusercontent.com/87487149/232273356-c7629197-1311-464a-bbd2-52103efdfce8.png">
